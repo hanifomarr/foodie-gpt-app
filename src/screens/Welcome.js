@@ -24,7 +24,10 @@ export default function Welcome() {
     }, 300);
 
     setTimeout(() => {
-      navigate.navigate("Home");
+      navigate.reset({
+        index: 0,
+        routes: [{ name: "Home" }],
+      });
     }, 2500);
   }, []);
 
