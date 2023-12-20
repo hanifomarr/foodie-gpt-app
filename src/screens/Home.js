@@ -7,6 +7,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Categories from "../components/Categories";
+import Recipes from "../components/Recipes";
 
 const Home = () => {
   const [activeCategory, setActiveCategory] = useState("Beef");
@@ -45,6 +46,11 @@ const Home = () => {
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
           />
+        </View>
+
+        {/* List of Recipes */}
+        <View>
+          <Recipes />
         </View>
       </ScrollView>
     </View>
