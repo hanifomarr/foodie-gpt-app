@@ -7,14 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { categoryData } from "../constants/data";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Animated, { FadeInDown } from "react-native-reanimated";
 
-const Categories = ({ activeCategory, setActiveCategory }) => {
+const Categories = ({ categories, activeCategory, handleChangeCategory }) => {
   return (
     <Animated.View entering={FadeInDown.duration(500).springify()}>
       <ScrollView
@@ -23,26 +22,26 @@ const Categories = ({ activeCategory, setActiveCategory }) => {
         contentContainerStyle={{ paddingHorizontal: 15 }}
         className="space-x-4"
       >
-        {categoryData.map((category, index) => {
-          const isActive = category.name === activeCategory;
+        {categories.map((category, index) => {
+          const isActive = category.strCategory === activeCategory;
           const activeButtonClass = isActive ? "bg-amber-300" : "bg-black/5";
           return (
             <TouchableOpacity
               key={index}
               onPress={() => {
-                setActiveCategory(category.name);
+                handleChangeCategory(category.strCategory);
               }}
               className="flex items-center space-y-1"
             >
               <View className={`rounded-full p-[6px] ${activeButtonClass}`}>
                 <Image
-                  source={{ uri: category.image }}
+                  source={{ uri: category.strCategoryThumb }}
                   style={{ height: hp(6), width: hp(6) }}
                   className="rounded-full"
                 />
               </View>
               <Text className="text-center text-nuetral-600">
-                {category.name}
+                {category.strCategory}
               </Text>
             </TouchableOpacity>
           );

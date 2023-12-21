@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, TextInput } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import * as Icons from "react-native-heroicons/outline";
 import {
@@ -8,9 +8,47 @@ import {
 } from "react-native-responsive-screen";
 import Categories from "../components/Categories";
 import Recipes from "../components/Recipes";
+import axios from "axios";
 
 const Home = () => {
   const [activeCategory, setActiveCategory] = useState("Beef");
+  const [categories, setCategories] = useState([]);
+  const [meals, setMeals] = useState([]);
+  console.log("🚀 ~ file: Home.js:17 ~ Home ~ meals:", meals);
+
+  const fetchCategory = async () => {
+    try {
+      const res = await axios.get(
+        "https://themealdb.com/api/json/v1/1/categories.php"
+      );
+      setCategories(res.data.categories);
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
+
+  const fetchMeals = async (category = "Beef") => {
+    try {
+      const res = await axios.get(
+        `https://themealdb.com/api/json/v1/1/filter.php?c=${category}`
+      );
+      setMeals(res.data.meals);
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategory();
+    fetchMeals();
+  }, []);
+
+  const handleChangeCategory = (category) => {
+    setMeals([]);
+    fetchMeals(category);
+    setActiveCategory(category);
+  };
+
   return (
     <View className="flex-1 bg-white">
       <StatusBar style="dark" />
@@ -19,12 +57,14 @@ const Home = () => {
         contentContainerStyle={{ paddingBottom: 50 }}
         className="space-y-6 pt-14"
       >
+        {/* Header */}
         <View className="flex-row justify-between items-center mx-4 mb-2">
           <Icons.UserCircleIcon color="gray" size={40} />
           <Text className="font-bold text-xl">Foodie GPT</Text>
           <Icons.BellIcon color="gray" size={40} />
         </View>
 
+        {/* Search Bar */}
         <View className="flex-row mx-4 p-[6px] rounded-full bg-black/5">
           <TextInput
             placeholderTextColor="gray"
@@ -42,15 +82,18 @@ const Home = () => {
 
         {/* Categories */}
         <View>
-          <Categories
-            activeCategory={activeCategory}
-            setActiveCategory={setActiveCategory}
-          />
+          {categories.length > 0 && (
+            <Categories
+              categories={categories}
+              activeCategory={activeCategory}
+              handleChangeCategory={handleChangeCategory}
+            />
+          )}
         </View>
 
         {/* List of Recipes */}
         <View>
-          <Recipes />
+          <Recipes meals={meals} categories={categories} />
         </View>
       </ScrollView>
     </View>
