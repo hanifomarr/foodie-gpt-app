@@ -16,7 +16,9 @@ const Recipes = ({ meals, categories }) => {
         Recipes
       </Text>
       <View>
-        {categories.length == 0 || meals.length == 0 ? null : (
+        {categories.length == 0 || meals.length == 0 ? (
+          <Loading size="large" className="mt-20" />
+        ) : (
           <MasonryList
             data={meals}
             keyExtractor={(item) => item.idMeal}
