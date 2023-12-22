@@ -17,6 +17,7 @@ import * as IconsSolid from "react-native-heroicons/solid";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import Loading from "../components/Loading";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 
 const MealDetails = ({ route }) => {
   const navigation = useNavigation();
@@ -60,7 +61,8 @@ const MealDetails = ({ route }) => {
         contentContainerStyle={{ paddingBottom: 30 }}
       >
         <View className="flex justify-center items-center">
-          <Image
+          <Animated.Image
+            sharedTransitionTag={idMeal}
             source={{ uri: strMealThumb }}
             style={{
               height: heightPercentageToDP(50),
@@ -70,7 +72,10 @@ const MealDetails = ({ route }) => {
             }}
           />
         </View>
-        <View className="flex-row w-full absolute pt-12 justify-between items-center ">
+        <Animated.View
+          entering={FadeIn.delay(200).duration(1000)}
+          className="flex-row w-full absolute pt-12 justify-between items-center "
+        >
           <Pressable
             className="bg-white ml-5 rounded-full p-2"
             onPress={() => {
@@ -93,13 +98,19 @@ const MealDetails = ({ route }) => {
               color={isFavourite ? "red" : "gray"}
             />
           </Pressable>
-        </View>
+        </Animated.View>
         {loading ? (
           <Loading size="large" className="mt-16" />
         ) : (
           <View className="flex justify-between px-4 space-y-4 pt-8">
             {/* Title */}
-            <View className="space-y-2">
+            <Animated.View
+              entering={FadeInDown.delay(100)
+                .springify()
+                .duration(700)
+                .damping(12)}
+              className="space-y-2"
+            >
               <Text
                 style={{ fontSize: heightPercentageToDP(4) }}
                 className="font-bold text-neutral-700"
@@ -112,10 +123,16 @@ const MealDetails = ({ route }) => {
               >
                 {meal?.strCategory}
               </Text>
-            </View>
+            </Animated.View>
 
             {/* Misc */}
-            <View className="flex-row justify-around">
+            <Animated.View
+              entering={FadeInDown.delay(200)
+                .springify()
+                .duration(700)
+                .damping(12)}
+              className="flex-row justify-around"
+            >
               <View className="bg-yellow-400 rounded-full p-2 flex items-center">
                 <View className="bg-white rounded-full p-2">
                   <Icons.ClockIcon
@@ -208,10 +225,16 @@ const MealDetails = ({ route }) => {
                   </Text>
                 </View>
               </View>
-            </View>
+            </Animated.View>
 
             {/* Ingredients */}
-            <View className="space-y-4">
+            <Animated.View
+              entering={FadeInDown.delay(300)
+                .springify()
+                .duration(700)
+                .damping(12)}
+              className="space-y-4"
+            >
               <Text
                 style={{ fontSize: heightPercentageToDP(2.5) }}
                 className="font-bold flex-1 text-neutral-700"
@@ -247,10 +270,16 @@ const MealDetails = ({ route }) => {
                   );
                 })}
               </View>
-            </View>
+            </Animated.View>
 
             {/* Instruction */}
-            <View className="space-y-4">
+            <Animated.View
+              entering={FadeInDown.delay(400)
+                .springify()
+                .duration(700)
+                .damping(12)}
+              className="space-y-4"
+            >
               <Text
                 style={{ fontSize: heightPercentageToDP(2.5) }}
                 className="font-bold flex-1 text-neutral-700"
@@ -275,7 +304,7 @@ const MealDetails = ({ route }) => {
                     ))}
                 </Text>
               )}
-            </View>
+            </Animated.View>
           </View>
         )}
       </ScrollView>

@@ -60,7 +60,8 @@ const ReciperCard = ({ item, index, navigation }) => {
           navigation.navigate("MealDetails", { ...item });
         }}
       >
-        <Image
+        <Animated.Image
+          sharedTransitionTag={item.idMeal}
           source={{ uri: item.strMealThumb }}
           style={{
             width: "100%",
