@@ -14,7 +14,6 @@ const Home = () => {
   const [activeCategory, setActiveCategory] = useState("Beef");
   const [categories, setCategories] = useState([]);
   const [meals, setMeals] = useState([]);
-  console.log("🚀 ~ file: Home.js:17 ~ Home ~ meals:", meals);
 
   const fetchCategory = async () => {
     try {
